@@ -4,8 +4,7 @@ import matplotlib.pyplot as plt
 
 from data import BASE_FINGERPRINT
 from simulator import generate_baseline_sessions, generate_obfuscated_sessions, obfuscate_session
-from tracker import similarity_score, predict_same_user
-
+from tracker import similarity_score, normalized_similarity_score, predict_same_user
 
 st.set_page_config(page_title="FingerprintFog Demo", page_icon="🕵️", layout="wide")
 st.title("🕵️ FingerprintFog")
@@ -22,7 +21,7 @@ st.json(BASE_FINGERPRINT)
 st.header("2) Generate one obfuscated session")
 if st.button("Generate New Obfuscated Session"):
     new_session = obfuscate_session(BASE_FINGERPRINT)
-    score = similarity_score(BASE_FINGERPRINT, new_session)
+    score = normalized_similarity_score(BASE_FINGERPRINT, new_session)
     same_user = predict_same_user(BASE_FINGERPRINT, new_session)
 
     col1, col2 = st.columns(2)
