@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "FingerprintFog",
+  "version": "0.1.0",
+  "description": "Demo browser fingerprint obfuscation for validation experiments.",
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["injected.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
