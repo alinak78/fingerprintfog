@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FingerprintFog</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>FingerprintFog</h1>
+        <p id="status">Checking this tab...</p>
+      </header>
+
+      <label for="profile">Profile</label>
+      <select id="profile">
+        <option value="random">Random per tab</option>
+      </select>
+
+      <div class="actions">
+        <button type="button" id="reload">Reload tab</button>
+        <button type="button" id="local-test">Local test</button>
+        <button type="button" id="cover-tracks">Cover Your Tracks</button>
+      </div>
+
+      <section>
+        <h2>Current page</h2>
+        <dl>
+          <div>
+            <dt>Profile</dt>
+            <dd id="profile-name">Unknown</dd>
+          </div>
+          <div>
+            <dt>Timezone</dt>
+            <dd id="timezone">Unknown</dd>
+          </div>
+          <div>
+            <dt>Platform</dt>
+            <dd id="platform">Unknown</dd>
+          </div>
+        </dl>
+      </section>
+
+      <p class="note">Changing profile takes effect after reloading the page.</p>
+    </main>
+    <script src="profiles.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

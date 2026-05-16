@@ -27,6 +27,46 @@
         font-size: 28px;
       }
 
+      .status {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin: 20px 0;
+      }
+
+      .metric {
+        min-height: 88px;
+        padding: 12px;
+        border: 1px solid color-mix(in srgb, CanvasText 18%, Canvas);
+        border-radius: 6px;
+        background: color-mix(in srgb, CanvasText 4%, Canvas);
+      }
+
+      .metric strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 12px;
+        color: color-mix(in srgb, CanvasText 68%, Canvas);
+      }
+
+      .metric span {
+        overflow-wrap: anywhere;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .protected {
+        border-color: #65a87d;
+        background: #eaf7ee;
+        color: #14532d;
+      }
+
+      .unprotected {
+        border-color: #d6a45d;
+        background: #fff5e7;
+        color: #713f12;
+      }
+
       .actions {
         display: flex;
         gap: 12px;
@@ -43,6 +83,11 @@
         cursor: pointer;
       }
 
+      h2 {
+        margin: 24px 0 8px;
+        font-size: 16px;
+      }
+
       pre {
         overflow: auto;
         padding: 16px;
@@ -50,16 +95,45 @@
         border-radius: 6px;
         background: color-mix(in srgb, CanvasText 6%, Canvas);
       }
+
+      @media (max-width: 760px) {
+        body {
+          padding: 20px;
+        }
+
+        .status {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body>
     <main>
       <h1>FingerprintFog Local Test</h1>
       <p>Open this page normally, then reload it after enabling the extension. Changed values mean browser-exposed APIs are being patched.</p>
+      <section class="status" aria-label="Fingerprint summary">
+        <div class="metric" id="protection-card">
+          <strong>Status</strong>
+          <span id="protection">Checking</span>
+        </div>
+        <div class="metric">
+          <strong>Profile</strong>
+          <span id="profile">None</span>
+        </div>
+        <div class="metric">
+          <strong>Platform</strong>
+          <span id="platform">Unknown</span>
+        </div>
+        <div class="metric">
+          <strong>Timezone</strong>
+          <span id="timezone">Unknown</span>
+        </div>
+      </section>
       <div class="actions">
         <button type="button" id="refresh">Refresh fingerprint</button>
         <button type="button" id="copy">Copy JSON</button>
       </div>
+      <h2>Raw fingerprint JSON</h2>
       <pre id="output"></pre>
     </main>
 
@@ -131,6 +205,18 @@
 
       const render = async () => {
         const fingerprint = await collectFingerprint();
+        const protectionCard = document.querySelector("#protection-card");
+        const protectedByFog = Boolean(fingerprint.fog?.enabled);
+
+        protectionCard.classList.toggle("protected", protectedByFog);
+        protectionCard.classList.toggle("unprotected", !protectedByFog);
+        document.querySelector("#protection").textContent = protectedByFog
+          ? "Protected"
+          : "Unprotected";
+        document.querySelector("#profile").textContent =
+          fingerprint.fog?.profile?.label || fingerprint.fog?.profileName || "None";
+        document.querySelector("#platform").textContent = fingerprint.platform;
+        document.querySelector("#timezone").textContent = fingerprint.timezone;
         document.querySelector("#output").textContent = JSON.stringify(fingerprint, null, 2);
       };
 

@@ -3,11 +3,16 @@
   "name": "FingerprintFog",
   "version": "0.1.0",
   "description": "Demo browser fingerprint obfuscation for validation experiments.",
+  "permissions": ["storage", "tabs", "scripting"],
   "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_title": "FingerprintFog",
+    "default_popup": "popup.html"
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content-script.js"],
+      "js": ["profiles.js", "content-script.js"],
       "run_at": "document_start",
       "all_frames": true
     }
